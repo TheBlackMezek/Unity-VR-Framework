@@ -327,6 +327,68 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!1 &6043287467094116104
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9218908743161851015}
+  - component: {fileID: 2622942500758426845}
+  m_Layer: 0
+  m_Name: TeleportManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9218908743161851015
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6043287467094116104}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 9087851100167164112}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2622942500758426845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6043287467094116104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c94940f0f5c4bf0428e5654d34225b72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teleportType: 1
+  transitionType: 1
+  teleportMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  validColor: {r: 0, g: 1, b: 1, a: 1}
+  invalidColor: {r: 1, g: 0.3137255, b: 0, a: 1}
+  maxDist: 100
+  velocity: 1
+  gravity: 0.15
+  segmentLength: 0.5
+  maxSegments: 50
+  fadeInLength: 0.2
+  fadeOutLength: 0.2
+  fadeColor: {r: 0, g: 0, b: 0, a: 1}
+  lerpLength: 0.2
+  playerObject: {fileID: 9087851100167164112}
+  cameraObject: {fileID: 9087851101437026364}
+  fadeImage: {fileID: 1174223244}
 --- !u!1 &9087851099962973908
 GameObject:
   m_ObjectHideFlags: 0
@@ -432,6 +494,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 9218908743161851015}
   - {fileID: 9087851100439441442}
   - {fileID: 9087851101408489676}
   - {fileID: 9087851101437026364}
@@ -599,7 +662,7 @@ Transform:
   - {fileID: 9087851100262526663}
   - {fileID: 546753949}
   m_Father: {fileID: 9087851100167164112}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9087851100210982734
 MonoBehaviour:
@@ -627,26 +690,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hand: 1
-  teleportType: 1
-  transitionType: 0
-  teleportMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  validColor: {r: 0, g: 1, b: 1, a: 1}
-  invalidColor: {r: 1, g: 0.39215687, b: 0, a: 1}
-  maxDist: 100
-  velocity: 1
-  gravity: 0.15
-  segmentLength: 0.5
-  maxSegments: 50
-  fadeInLength: 0.2
-  fadeOutLength: 0.2
-  fadeColor: {r: 0, g: 0, b: 0, a: 1}
   lineRenderer: {fileID: 8785682364586490993}
-  playerObject: {fileID: 9087851100167164112}
-  cameraObject: {fileID: 9087851101437026364}
   teleportEnd: {fileID: 546753950}
-  fadeImage: {fileID: 1174223244}
+  teleportManager: {fileID: 2622942500758426845}
 --- !u!120 &8785682364586490993
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -963,7 +1009,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 9087851100167164112}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9087851100439441443
 MonoBehaviour:
@@ -1883,7 +1929,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 9087851100167164112}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9087851101408489675
 MonoBehaviour:
@@ -1928,7 +1974,7 @@ Transform:
   m_Children:
   - {fileID: 672048884}
   m_Father: {fileID: 9087851100167164112}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &9087851101437026363
 Camera:
@@ -2169,7 +2215,7 @@ Transform:
   - {fileID: 9087851100261321475}
   - {fileID: 1168833007}
   m_Father: {fileID: 9087851100167164112}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9087851101900459477
 MonoBehaviour:
@@ -2197,26 +2243,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hand: 0
-  teleportType: 1
-  transitionType: 0
-  teleportMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  validColor: {r: 0, g: 1, b: 1, a: 1}
-  invalidColor: {r: 1, g: 0.39215687, b: 0, a: 1}
-  maxDist: 100
-  velocity: 1
-  gravity: 0.15
-  segmentLength: 0.5
-  maxSegments: 50
-  fadeInLength: 0.2
-  fadeOutLength: 0.2
-  fadeColor: {r: 0, g: 0, b: 0, a: 1}
   lineRenderer: {fileID: 5697842349636272974}
-  playerObject: {fileID: 9087851100167164112}
-  cameraObject: {fileID: 9087851101437026364}
   teleportEnd: {fileID: 1168833008}
-  fadeImage: {fileID: 1174223244}
+  teleportManager: {fileID: 2622942500758426845}
 --- !u!120 &5697842349636272974
 LineRenderer:
   m_ObjectHideFlags: 0
