@@ -691,6 +691,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d8a3af48a4a33c40925446c1645a46c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  body: {fileID: 6376906815311281957}
   hand: 1
 --- !u!114 &4267086891429178864
 MonoBehaviour:
@@ -2275,6 +2276,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d8a3af48a4a33c40925446c1645a46c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  body: {fileID: 854836302482329836}
   hand: 0
 --- !u!114 &8401237573664178514
 MonoBehaviour:
