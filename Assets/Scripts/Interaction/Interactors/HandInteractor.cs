@@ -15,13 +15,15 @@ public class HandInteractor : Interactor
     {
         if(hand == Handedness.LEFT)
         {
-            VRInputManager.OnLeftTriggerDown.AddListener(HoldBegin);
-            VRInputManager.OnLeftTriggerUp.AddListener(HoldEnd);
+            VRInputManager.OnLeftTriggerDown.AddListener(InteractBegin);
+            VRInputManager.OnLeftTriggerUp.AddListener(InteractEnd);
+            VRInputManager.OnLeftGripDown.AddListener(ReleaseHoldInput);
         }
         else
         {
-            VRInputManager.OnRightTriggerDown.AddListener(HoldBegin);
-            VRInputManager.OnRightTriggerUp.AddListener(HoldEnd);
+            VRInputManager.OnRightTriggerDown.AddListener(InteractBegin);
+            VRInputManager.OnRightTriggerUp.AddListener(InteractEnd);
+            VRInputManager.OnRightGripDown.AddListener(ReleaseHoldInput);
         }
     }
 

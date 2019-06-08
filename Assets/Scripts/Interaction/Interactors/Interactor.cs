@@ -6,6 +6,8 @@ using UnityEngine;
 public class Interactor : MonoBehaviour
 {
 
+    [SerializeField] protected Rigidbody body;
+
     protected List<Interactable> touching = new List<Interactable>();
     protected List<Interactable> holding = new List<Interactable>();
 
@@ -28,7 +30,7 @@ public class Interactor : MonoBehaviour
             touching[i].TouchUpdate(transform);
 
         for (int i = 0; i < holding.Count; ++i)
-            holding[i].HoldUpdate(transform);
+            holding[i].HoldUpdate(transform, body.velocity, body.angularVelocity);
     }
 
     protected virtual void OnTriggerExit(Collider other)
@@ -42,21 +44,29 @@ public class Interactor : MonoBehaviour
         }
     }
 
-    public virtual void HoldBegin()
+    public virtual void InteractBegin()
     {
         for(int i = 0; i < touching.Count; ++i)
         {
-            holding.Add(touching[i]);
-            touching[i].HoldBegin(this);
+            touching[i].InteractBegin(this);
         }
     }
 
-    public virtual void HoldEnd()
+    public virtual void InteractEnd()
     {
         for (int i = 0; i < holding.Count; ++i)
-            holding[i].HoldEnd(transform);
+            holding[i].InteractEnd(transform);
+    }
 
-        holding.Clear();
+    public virtual void ReleaseHoldInput()
+    {
+        for (int i = 0; i < holding.Count; ++i)
+            holding[i].NoncontinuousHoldRelease();
+    }
+
+    public virtual void Hold(Interactable interactable)
+    {
+        holding.Add(interactable);
     }
 
     public virtual void Release(Interactable interactable)
