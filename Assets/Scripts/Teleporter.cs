@@ -11,11 +11,15 @@ public class Teleporter : MonoBehaviour
     [SerializeField] private Handedness hand;
     [SerializeField] private float maxDist;
     [SerializeField] private LayerMask teleportMask;
+    [SerializeField] private Color validColor;
+    [SerializeField] private Color invalidColor;
 
     [Header("Links")]
 
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private Transform playerObject;
+    [SerializeField] private Transform cameraObject;
+    [SerializeField] private MeshRenderer teleportEnd;
 
     private bool validTeleport;
 
@@ -38,6 +42,7 @@ public class Teleporter : MonoBehaviour
 
         lineRenderer.enabled = false;
         lineRenderer.positionCount = 2;
+        teleportEnd.gameObject.SetActive(false);
     }
 
     private void SelectionStart()
@@ -53,11 +58,26 @@ public class Teleporter : MonoBehaviour
         if (Physics.Raycast(transform.position, transform.forward, out hit, maxDist, teleportMask))
         {
             lineRenderer.SetPosition(1, hit.point);
+            lineRenderer.startColor = validColor;
+            lineRenderer.endColor = validColor;
+
+            teleportEnd.gameObject.SetActive(true);
+            MaterialPropertyBlock block = new MaterialPropertyBlock();
+            block.SetColor("_Color", validColor);
+            teleportEnd.SetPropertyBlock(block);
+            teleportEnd.transform.position = hit.point;
+            teleportEnd.transform.rotation = Quaternion.identity;
+
             validTeleport = true;
         }
         else
         {
             lineRenderer.SetPosition(1, transform.position + transform.forward * maxDist);
+            lineRenderer.startColor = invalidColor;
+            lineRenderer.endColor = invalidColor;
+
+            teleportEnd.gameObject.SetActive(false);
+
             validTeleport = false;
         }
     }
@@ -65,9 +85,15 @@ public class Teleporter : MonoBehaviour
     private void Teleport()
     {
         lineRenderer.enabled = false;
+        teleportEnd.gameObject.SetActive(false);
 
-        if(validTeleport)
-            playerObject.position = lineRenderer.GetPosition(1);
+        if (validTeleport)
+        {
+            Vector3 finalPos = lineRenderer.GetPosition(1);
+            finalPos.x -= cameraObject.localPosition.x;
+            finalPos.z -= cameraObject.localPosition.z;
+            playerObject.position = finalPos;
+        }
     }
 
 }
