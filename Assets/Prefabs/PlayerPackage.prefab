@@ -693,6 +693,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   body: {fileID: 6376906815311281957}
   hand: 1
+  velocityTracker: {fileID: 9087851100210982734}
 --- !u!114 &4267086891429178864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2278,6 +2279,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   body: {fileID: 854836302482329836}
   hand: 0
+  velocityTracker: {fileID: 9087851101900459477}
 --- !u!114 &8401237573664178514
 MonoBehaviour:
   m_ObjectHideFlags: 0

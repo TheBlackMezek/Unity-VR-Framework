@@ -11,6 +11,9 @@ public class DeviceFollower : MonoBehaviour
     [SerializeField]
     private DeviceEnum deviceEnum;
 
+    public Vector3 Velocity { get; private set; }
+    public Vector3 AngularVelocity { get; private set; }
+
     private InputDevice device;
 
 
@@ -26,12 +29,18 @@ public class DeviceFollower : MonoBehaviour
     {
         Vector3 pos;
         Quaternion rot;
+        Vector3 vel;
+        Vector3 avel;
 
         device.TryGetFeatureValue(CommonUsages.devicePosition, out pos);
         device.TryGetFeatureValue(CommonUsages.deviceRotation, out rot);
+        device.TryGetFeatureValue(CommonUsages.deviceVelocity, out vel);
+        device.TryGetFeatureValue(CommonUsages.deviceAngularVelocity, out avel);
 
         transform.localPosition = pos;
         transform.localRotation = rot;
+        Velocity = vel;
+        AngularVelocity = avel;
     }
 
     private void GetDevice()

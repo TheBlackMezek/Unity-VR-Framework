@@ -8,6 +8,7 @@ public class HandInteractor : Interactor
     [Header("HandInteractor Settingss")]
 
     [SerializeField] private Handedness hand;
+    [SerializeField] private DeviceFollower velocityTracker;
 
 
 
@@ -25,6 +26,13 @@ public class HandInteractor : Interactor
             VRInputManager.OnRightTriggerUp.AddListener(InteractEnd);
             VRInputManager.OnRightGripDown.AddListener(ReleaseHoldInput);
         }
+    }
+
+    override protected void Update()
+    {
+        body.velocity = velocityTracker.Velocity;
+        body.angularVelocity = velocityTracker.AngularVelocity;
+        base.Update();
     }
 
 }
