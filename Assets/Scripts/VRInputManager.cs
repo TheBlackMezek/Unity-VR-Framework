@@ -39,6 +39,10 @@ public class VRInputManager : MonoBehaviour
     public static UnityEvent OnRightPadClick;
     public static UnityEvent OnRightPadClickUp;
 
+    public static UnityEvent OnHeadObtained;
+    public static UnityEvent OnLeftHandObtained;
+    public static UnityEvent OnRightHandObtained;
+
     public static bool LeftTriggerDown { get; private set; }
     public static bool LeftTrigger { get; private set; }
     public static bool LeftTriggerUp { get; private set; }
@@ -86,9 +90,9 @@ public class VRInputManager : MonoBehaviour
     public static Vector3 RightHandPos { get; private set; }
     public static Quaternion RightHandRot { get; private set; }
 
-    private InputDevice head;
-    private InputDevice leftHand;
-    private InputDevice rightHand;
+    public static InputDevice head { get; private set; }
+    public static InputDevice leftHand { get; private set; }
+    public static InputDevice rightHand { get; private set; }
 
 
 
@@ -127,6 +131,10 @@ public class VRInputManager : MonoBehaviour
         OnRightPadClickDown = new UnityEvent();
         OnRightPadClick = new UnityEvent();
         OnRightPadClickUp = new UnityEvent();
+
+        OnHeadObtained = new UnityEvent();
+        OnLeftHandObtained = new UnityEvent();
+        OnRightHandObtained = new UnityEvent();
     }
 
     private void Start()
@@ -199,6 +207,7 @@ public class VRInputManager : MonoBehaviour
         LeftTriggerDown = (leftTrigger && !LeftTrigger);
         LeftTriggerUp = (!leftTrigger && LeftTrigger);
         LeftTrigger = leftTrigger;
+        LeftTriggerVal = leftTriggerVal;
         LeftGripDown = (leftGrip && !LeftGrip);
         LeftGripUp = (!leftGrip && LeftGrip);
         LeftGrip = leftGrip;
@@ -218,6 +227,7 @@ public class VRInputManager : MonoBehaviour
         RightTriggerDown = (rightTrigger && !RightTrigger);
         RightTriggerUp = (!rightTrigger && RightTrigger);
         RightTrigger = rightTrigger;
+        RightTriggerVal = rightTriggerVal;
         RightGripDown = (rightGrip && !RightGrip);
         RightGripUp = (!rightGrip && RightGrip);
         RightGrip = rightGrip;
@@ -233,7 +243,7 @@ public class VRInputManager : MonoBehaviour
         RightHandPos = rightPos;
         RightHandRot = rightRot;
         #endregion
-
+        
         #region Event Invokes
         if (LeftTriggerDown)
             OnLeftTriggerDown.Invoke();
@@ -305,6 +315,8 @@ public class VRInputManager : MonoBehaviour
         //The device might not have been recognized yet so this check is necessary
         if (head.name == "")
             Invoke("GetHead", 0.1f);
+        else
+            OnHeadObtained.Invoke();
     }
 
     private void GetLeftHand()
@@ -313,6 +325,8 @@ public class VRInputManager : MonoBehaviour
         //The device might not have been recognized yet so this check is necessary
         if (leftHand.name == "")
             Invoke("GetLeftHand", 0.1f);
+        else
+            OnLeftHandObtained.Invoke();
     }
 
     private void GetRightHand()
@@ -321,6 +335,10 @@ public class VRInputManager : MonoBehaviour
         //The device might not have been recognized yet so this check is necessary
         if (rightHand.name == "")
             Invoke("GetRightHand", 0.1f);
+        else
+        {
+            OnRightHandObtained.Invoke();
+        }
     }
     
 }
