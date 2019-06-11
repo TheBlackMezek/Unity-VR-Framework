@@ -14,6 +14,8 @@ public class HandInteractor : Interactor
     private XRNode node;
     private float clock = 0f;
 
+    private List<HapticMaterial> touchingMaterials = new List<HapticMaterial>();
+
 
 
     private void Start()
@@ -40,14 +42,61 @@ public class HandInteractor : Interactor
         body.angularVelocity = velocityTracker.AngularVelocity;
         base.Update();
 
-        if (clock > 0f)
-            clock -= Time.deltaTime;
-        else
+        for(int i = 0; i < touchingMaterials.Count; ++i)
         {
-            clock = 1f;
-            //HapticHandler.Blip(node, 0.1f);
-            HapticHandler.FlatPulse(node, 0.5f, 0.5f);
+            if (holding.Contains(touchingMaterials[i].GetComponent<Interactable>()) || HapticHandler.DoingPulse(node))
+                continue;
+
+            float amp = touchingMaterials[i].GetStayTouchAmplitude(body.velocity);
+            if (amp > 0f)
+                HapticHandler.Blip(node, amp);
         }
+    }
+
+    protected override void OnTriggerEnter(Collider other)
+    {
+        base.OnTriggerEnter(other);
+
+        HapticMaterial mat = other.GetComponent<HapticMaterial>();
+
+        if (mat != null)
+        {
+            touchingMaterials.Add(mat);
+            HapticHandler.DoPulseData(node, mat.GetBeginTouchPulse(body.velocity));
+        }
+    }
+
+    protected override void OnTriggerExit(Collider other)
+    {
+        base.OnTriggerExit(other);
+
+        HapticMaterial mat = other.GetComponent<HapticMaterial>();
+
+        if (mat != null)
+        {
+            touchingMaterials.Remove(mat);
+            HapticHandler.DoPulseData(node, mat.GetEndTouchPulse(body.velocity));
+        }
+    }
+
+    public override void Hold(Interactable interactable)
+    {
+        base.Hold(interactable);
+
+        HapticMaterial mat = interactable.GetComponent<HapticMaterial>();
+
+        if (mat != null)
+            HapticHandler.DoPulseData(node, mat.GetBeginTouchPulse(body.velocity));
+    }
+
+    public override void Release(Interactable interactable)
+    {
+        base.Release(interactable);
+
+        HapticMaterial mat = interactable.GetComponent<HapticMaterial>();
+
+        if (mat != null)
+            HapticHandler.DoPulseData(node, mat.GetBeginTouchPulse(body.velocity));
     }
 
 }
