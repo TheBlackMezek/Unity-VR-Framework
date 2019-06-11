@@ -2,9 +2,9 @@
 public enum HapticPulseType
 {
     NONE,
+    BLIP,
     FLAT,
     SINE,
     COSINE,
-    LERP_UP,
-    LERP_DOWN
+    LERP
 }
