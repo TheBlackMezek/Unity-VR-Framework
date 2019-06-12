@@ -31,6 +31,7 @@ public class Interactable : MonoBehaviour
     protected bool held;
     protected bool justStartedHold;
     protected Interactor holder;
+    protected CollisionDetectionMode originalDetectionMode;
 
 
 
@@ -54,6 +55,8 @@ public class Interactable : MonoBehaviour
             OnUseUpdate = new UnityEvent();
         if (OnUseEnd == null)
             OnUseEnd = new UnityEvent();
+
+        originalDetectionMode = body.collisionDetectionMode;
     }
 
     public virtual void TouchBegin(Transform interactor)
@@ -143,6 +146,7 @@ public class Interactable : MonoBehaviour
     protected virtual void HoldBegin()
     {
         holder.Hold(this);
+        body.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
     }
 
     protected virtual void HoldSwap()
@@ -155,6 +159,7 @@ public class Interactable : MonoBehaviour
         holder.Release(this);
         body.velocity = velocity;
         body.angularVelocity = angularVelocity;
+        body.collisionDetectionMode = originalDetectionMode;
     }
 
 }
