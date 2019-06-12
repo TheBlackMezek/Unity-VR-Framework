@@ -118,7 +118,7 @@ public class HapticHandler : MonoBehaviour
 
     public static void Blip(XRNode node, float amplitude = 1f)
     {
-        if (devices[(int)node].name != "")
+        if (devices[(int)node].name != "" && pulseData[(int)node].type == HapticPulseType.NONE)
             devices[(int)node].SendHapticImpulse(0, amplitude);
         else
             Debug.LogWarning("Blip called for device which has not been found yet");
