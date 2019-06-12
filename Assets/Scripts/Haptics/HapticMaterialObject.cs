@@ -18,6 +18,11 @@ public class HapticMaterialObject : ScriptableObject
 
     public HapticPulseData beginHoldPulse;
     public HapticPulseData endHoldPulse;
+    public HapticPulseData beginHitPulse;
+    public HapticPulseData endHitPulse;
+    public AnimationCurve beginHitVelocityCurve;
+    public AnimationCurve endHitVelocityCurve;
+    public AnimationCurve swingVelocityCurve;
 
 
 
@@ -39,7 +44,6 @@ public class HapticMaterialObject : ScriptableObject
 
     public float GetStayTouchAmplitude(float relativeVelocity)
     {
-        Debug.Log(relativeVelocity + " " + stayTouchVelocityCurve.Evaluate(relativeVelocity));
         return stayTouchVelocityCurve.Evaluate(relativeVelocity);
     }
 
@@ -51,6 +55,27 @@ public class HapticMaterialObject : ScriptableObject
     public HapticPulseData GetEndHoldPulse()
     {
         return endHoldPulse;
+    }
+
+    public HapticPulseData GetBeginHitPulse(float relativeVelocity)
+    {
+        HapticPulseData dat = beginHitPulse;
+        dat.amplitude1 *= beginHitVelocityCurve.Evaluate(relativeVelocity);
+        dat.amplitude2 *= beginHitVelocityCurve.Evaluate(relativeVelocity);
+        return dat;
+    }
+
+    public HapticPulseData GetEndHitPulse(float relativeVelocity)
+    {
+        HapticPulseData dat = endHitPulse;
+        dat.amplitude1 *= endHitVelocityCurve.Evaluate(relativeVelocity);
+        dat.amplitude2 *= endHitVelocityCurve.Evaluate(relativeVelocity);
+        return dat;
+    }
+
+    public float GetSwingAmplitude(float velocity)
+    {
+        return swingVelocityCurve.Evaluate(velocity);
     }
 
 }
