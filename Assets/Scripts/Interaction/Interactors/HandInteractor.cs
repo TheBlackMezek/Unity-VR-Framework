@@ -44,8 +44,17 @@ public class HandInteractor : Interactor
 
         for(int i = 0; i < touchingMaterials.Count; ++i)
         {
-            if (holding.Contains(touchingMaterials[i].GetComponent<Interactable>()) || HapticHandler.DoingPulse(node))
+            if (holding.Contains(touchingMaterials[i].GetComponent<Interactable>()))
+            {
+                float swingAmp = touchingMaterials[i].GetSwingUpdateAmplitude(Time.deltaTime);
+                if(swingAmp > 0f)
+                    HapticHandler.Blip(node, swingAmp);
                 continue;
+            }
+            else if(HapticHandler.DoingPulse(node))
+            {
+                continue;
+            }
 
             float amp = touchingMaterials[i].GetStayTouchAmplitude(body.velocity);
             if (amp > 0f)
@@ -86,7 +95,11 @@ public class HandInteractor : Interactor
         HapticMaterial mat = interactable.GetComponent<HapticMaterial>();
 
         if (mat != null)
+        {
             HapticHandler.DoPulseData(node, mat.GetBeginTouchPulse(body.velocity));
+            mat.SetStartHoldPos();
+            mat.onCollisionNode = node;
+        }
     }
 
     public override void Release(Interactable interactable)
@@ -96,7 +109,10 @@ public class HandInteractor : Interactor
         HapticMaterial mat = interactable.GetComponent<HapticMaterial>();
 
         if (mat != null)
+        {
             HapticHandler.DoPulseData(node, mat.GetBeginTouchPulse(body.velocity));
+            mat.onCollisionNode = XRNode.LeftEye;
+        }
     }
 
 }
