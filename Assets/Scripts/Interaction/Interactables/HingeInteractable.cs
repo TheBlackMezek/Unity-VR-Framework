@@ -53,15 +53,15 @@ public class HingeInteractable : Interactable
 
     protected void SetInitialTransformData()
     {
-        interactorOffset = transform.InverseTransformPoint(holder.transform.position - transform.position);
+        interactorOffset = transform.InverseTransformPoint(holder.transform.position);
     }
 
     public override void HoldUpdate(Transform interactor, Vector3 velocity, Vector3 angularVelocity)
     {
         base.HoldUpdate(interactor, velocity, angularVelocity);
 
-        Vector3 interactorPos = interactor.position - transform.TransformPoint(interactorOffset);
-        interactorPos = hingePoint.InverseTransformPoint(interactorPos);
+        Vector3 interactorPos = interactor.position;// - transform.TransformPoint(interactorOffset);
+        interactorPos = hingePoint.InverseTransformPoint(transform.TransformPoint(transform.InverseTransformPoint(interactorPos) - interactorOffset));
 
         Vector3 angleAxis = Vector3.zero;
         
