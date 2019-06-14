@@ -56,7 +56,8 @@ public class Interactable : MonoBehaviour
         if (OnUseEnd == null)
             OnUseEnd = new UnityEvent();
 
-        originalDetectionMode = body.collisionDetectionMode;
+        if(body != null)
+            originalDetectionMode = body.collisionDetectionMode;
     }
 
     public virtual void TouchBegin(Transform interactor)
@@ -127,8 +128,6 @@ public class Interactable : MonoBehaviour
 
     public virtual void HoldUpdate(Transform interactor, Vector3 velocity, Vector3 angularVelocity)
     {
-        body.velocity = velocity;
-        body.angularVelocity = angularVelocity;
         OnHoldUpdate.Invoke();
     }
 
@@ -157,8 +156,6 @@ public class Interactable : MonoBehaviour
     protected virtual void HoldEnd(Vector3 velocity, Vector3 angularVelocity)
     {
         holder.Release(this);
-        body.velocity = velocity;
-        body.angularVelocity = angularVelocity;
         body.collisionDetectionMode = originalDetectionMode;
     }
 
