@@ -49,17 +49,24 @@ public class PickupInteractable : Interactable
 
     public override void HoldUpdate(Transform interactor, Vector3 velocity, Vector3 angularVelocity)
     {
-        base.HoldUpdate(interactor, velocity, angularVelocity);
-        
+        body.velocity = velocity;
+        body.angularVelocity = angularVelocity;
+
         transform.localPosition = localPos;
         transform.localRotation = localRot;
+
+        base.HoldUpdate(interactor, velocity, angularVelocity);
+
     }
 
     protected override void HoldEnd(Vector3 velocity, Vector3 angularVelocity)
     {
-        base.HoldEnd(velocity, angularVelocity);
+        body.velocity = velocity;
+        body.angularVelocity = angularVelocity;
 
         transform.parent = originalParent;
+
+        base.HoldEnd(velocity, angularVelocity);
     }
 
 }
