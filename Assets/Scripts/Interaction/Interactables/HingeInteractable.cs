@@ -5,8 +5,12 @@ using UnityEngine;
 public class HingeInteractable : Interactable
 {
 
+    [Header("Hinge Settings")]
+
     [SerializeField] private Transform hingePoint;
     [SerializeField] private Axis axis;
+    [SerializeField] private float rotationRange;
+    [SerializeField] private float initialRotation;
 
     private float hingeDist;
     private Vector3 alignmentAxis;
@@ -60,7 +64,7 @@ public class HingeInteractable : Interactable
     {
         base.HoldUpdate(interactor, velocity, angularVelocity);
 
-        Vector3 interactorPos = interactor.position;// - transform.TransformPoint(interactorOffset);
+        Vector3 interactorPos = interactor.position;
         interactorPos = hingePoint.InverseTransformPoint(transform.TransformPoint(transform.InverseTransformPoint(interactorPos) - interactorOffset));
 
         Vector3 angleAxis = Vector3.zero;
@@ -86,8 +90,16 @@ public class HingeInteractable : Interactable
         transform.position = hingePoint.TransformPoint(newPos);
 
         Vector3 dir = (transform.position - hingePoint.position).normalized;
-        Debug.Log(Vector3.SignedAngle(originalDir, dir, angleAxis));
-        transform.rotation = originalRot * Quaternion.AngleAxis(Vector3.SignedAngle(originalDir, dir, angleAxis), alignmentAxis);
+        float newAngle = Vector3.SignedAngle(originalDir, dir, angleAxis);
+
+        //if(rotationRange > 0f)
+        //{
+        //    float rangeAngle = newAngle + initialRotation;
+        //    if(rangeAngle > rotationRange)
+        //        newAngle 
+        //}
+
+        transform.rotation = originalRot * Quaternion.AngleAxis(newAngle, alignmentAxis);
     }
 
 }
