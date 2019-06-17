@@ -1068,8 +1068,9 @@ GameObject:
   m_Component:
   - component: {fileID: 9087851100439441442}
   - component: {fileID: 9087851100439441443}
+  - component: {fileID: 472876142078712090}
   m_Layer: 0
-  m_Name: PreUpdater
+  m_Name: UpdateSubscribes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1099,6 +1100,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78fd3bc3e49596249946fe39e69e2013, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &472876142078712090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9087851100439441441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eabf92018ac07cf4eaea4d511e57cbcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &9087851100472673622
