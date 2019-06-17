@@ -183,7 +183,7 @@ public class VRInputManager : MonoBehaviour
         leftHand.TryGetFeatureValue(CommonUsages.grip, out leftGripVal);
         leftHand.TryGetFeatureValue(CommonUsages.primary2DAxisTouch, out leftPadTouch);
         leftHand.TryGetFeatureValue(CommonUsages.primary2DAxisClick, out leftPadClick);
-        leftHand.TryGetFeatureValue(CommonUsages.menuButton, out leftMenu);
+        leftHand.TryGetFeatureValue(CommonUsages.primaryButton, out leftMenu);
         leftHand.TryGetFeatureValue(CommonUsages.devicePosition, out leftPos);
         leftHand.TryGetFeatureValue(CommonUsages.deviceRotation, out leftRot);
 
@@ -194,7 +194,7 @@ public class VRInputManager : MonoBehaviour
         rightHand.TryGetFeatureValue(CommonUsages.grip, out rightGripVal);
         rightHand.TryGetFeatureValue(CommonUsages.primary2DAxisTouch, out rightPadTouch);
         rightHand.TryGetFeatureValue(CommonUsages.primary2DAxisClick, out rightPadClick);
-        rightHand.TryGetFeatureValue(CommonUsages.menuButton, out rightMenu);
+        rightHand.TryGetFeatureValue(CommonUsages.primaryButton, out rightMenu);
         rightHand.TryGetFeatureValue(CommonUsages.devicePosition, out rightPos);
         rightHand.TryGetFeatureValue(CommonUsages.deviceRotation, out rightRot);
         #endregion
