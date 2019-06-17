@@ -10,6 +10,6 @@ This project is currently being set up to work with OpenVR and the Vive because 
 ## Features
 
 - A single Player prefab which comes equipped with interactor hands, configurable teleporting, and all the management scripts the framework needs. No complicated setup!
-- Haptic materials that can be applied to all the objects in your scene at almost no cost to CPU or RAM!
+- Haptic materials that can be applied to all the objects in your scene at almost no cost to CPU or RAM.
 - **COMING SOON:**
 - Prefabs for various interactable objects: pickups, doors, levers, buttons, sliders, drawers, bows, and slingshots.
