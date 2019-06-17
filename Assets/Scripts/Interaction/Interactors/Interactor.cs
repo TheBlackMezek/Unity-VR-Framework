@@ -74,4 +74,10 @@ public class Interactor : MonoBehaviour
         holding.Remove(interactable);
     }
 
+    public virtual bool GetNode(out UnityEngine.XR.XRNode node)
+    {
+        node = UnityEngine.XR.XRNode.LeftEye;
+        return false;
+    }
+
 }

@@ -11,6 +11,10 @@ public class HingeInteractable : Interactable
     [SerializeField] private Axis axis;
     [SerializeField] private float rotationRange;
     [SerializeField] private float initialRotation;
+    [SerializeField] private HapticPulseData onMaxReachedPulse;
+    [SerializeField] private HapticPulseData onMaxLeftPulse;
+    [SerializeField] private HapticPulseData onMinReachedPulse;
+    [SerializeField] private HapticPulseData onMinLeftPulse;
 
     private float hingeDist;
     private Vector3 alignmentAxis;
@@ -18,12 +22,15 @@ public class HingeInteractable : Interactable
     private Vector3 originalDir;
     private Quaternion originalRot;
     private Vector3 interactorOffset;
+    private float prevAngle;
 
 
 
     protected override void Awake()
     {
         base.Awake();
+
+        prevAngle = initialRotation;
 
         hingeDist = Vector3.Distance(hingePoint.position, transform.position);
         originalDir = (transform.position - hingePoint.position).normalized;
@@ -95,7 +102,23 @@ public class HingeInteractable : Interactable
                 rangeAngle = rotationRange;
             else if (rangeAngle < 0f)
                 rangeAngle = 0f;
+
             newAngle = rangeAngle - initialRotation;
+
+            UnityEngine.XR.XRNode node;
+            if(holder.GetNode(out node) && rangeAngle != prevAngle)
+            {
+                Debug.Log(rangeAngle);
+                if (rangeAngle == 0f)
+                    HapticHandler.DoPulseData(node, onMinReachedPulse);
+                else if (rangeAngle == rotationRange)
+                    HapticHandler.DoPulseData(node, onMaxReachedPulse);
+                else if (prevAngle == 0f)
+                    HapticHandler.DoPulseData(node, onMinLeftPulse);
+                else if (prevAngle == rotationRange)
+                    HapticHandler.DoPulseData(node, onMaxLeftPulse);
+            }
+            prevAngle = rangeAngle;
         }
 
         Quaternion rotMod = Quaternion.AngleAxis(newAngle, alignmentAxis);

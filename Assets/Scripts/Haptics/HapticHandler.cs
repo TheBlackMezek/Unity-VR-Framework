@@ -43,6 +43,8 @@ public class HapticHandler : MonoBehaviour
 
         if (!finished && tries < maxDeviceGetTries)
             Invoke("GetDevices", 0.1f);
+        else if (!finished)
+            Invoke("GetDevices", 5f);
     }
 
     private void Update()
@@ -116,12 +118,14 @@ public class HapticHandler : MonoBehaviour
             pulseData[(int)node] = dat;
     }
 
-    public static void Blip(XRNode node, float amplitude = 1f)
+    public static void Blip(XRNode node, float amplitude = 1f, bool overrideData = true)
     {
-        if (devices[(int)node].name != "" && pulseData[(int)node].type == HapticPulseType.NONE)
+        if (devices[(int)node].name != "" && (overrideData || pulseData[(int)node].type == HapticPulseType.NONE))
             devices[(int)node].SendHapticImpulse(0, amplitude);
-        else
+        else if (devices[(int)node].name == "")
             Debug.LogWarning("Blip called for device which has not been found yet");
+        else
+            Debug.LogWarning("Blip called for device currently doing pulse");
     }
 
     public static void FlatPulse(XRNode node, float amplitude, float length)
