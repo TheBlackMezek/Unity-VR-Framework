@@ -84,22 +84,24 @@ public class HingeInteractable : Interactable
                 angleAxis = Vector3.forward;
                 break;
         }
-        
-        //Using the interactor position in hinge space as a direction
-        Vector3 newPos = interactorPos.normalized * hingeDist;
-        transform.position = hingePoint.TransformPoint(newPos);
 
-        Vector3 dir = (transform.position - hingePoint.position).normalized;
+        Vector3 dir = interactorPos.normalized;
         float newAngle = Vector3.SignedAngle(originalDir, dir, angleAxis);
 
-        //if(rotationRange > 0f)
-        //{
-        //    float rangeAngle = newAngle + initialRotation;
-        //    if(rangeAngle > rotationRange)
-        //        newAngle 
-        //}
+        if (rotationRange > 0f)
+        {
+            float rangeAngle = newAngle + initialRotation;
+            if (rangeAngle > rotationRange)
+                rangeAngle = rotationRange;
+            else if (rangeAngle < 0f)
+                rangeAngle = 0f;
+            newAngle = rangeAngle - initialRotation;
+        }
 
-        transform.rotation = originalRot * Quaternion.AngleAxis(newAngle, alignmentAxis);
+        Quaternion rotMod = Quaternion.AngleAxis(newAngle, alignmentAxis);
+        transform.rotation = originalRot * rotMod;
+        dir = rotMod * originalDir;
+        transform.position = hingePoint.TransformPoint(dir * hingeDist);
     }
 
 }

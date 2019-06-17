@@ -1635,6 +1635,8 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   hingePoint: {fileID: 904965806}
   axis: 1
+  rotationRange: 30
+  initialRotation: 15
 --- !u!114 &1682691254
 MonoBehaviour:
   m_ObjectHideFlags: 0
