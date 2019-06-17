@@ -1637,6 +1637,34 @@ MonoBehaviour:
   axis: 1
   rotationRange: 30
   initialRotation: 15
+  onMaxReachedPulse:
+    type: 1
+    clock: 0
+    length: 0.1
+    amplitude1: 1
+    amplitude2: 0
+    cycles: 0
+  onMaxLeftPulse:
+    type: 1
+    clock: 0
+    length: 0.1
+    amplitude1: 1
+    amplitude2: 0
+    cycles: 0
+  onMinReachedPulse:
+    type: 1
+    clock: 0
+    length: 0.1
+    amplitude1: 1
+    amplitude2: 0
+    cycles: 0
+  onMinLeftPulse:
+    type: 1
+    clock: 0
+    length: 0.1
+    amplitude1: 1
+    amplitude2: 0
+    cycles: 0
 --- !u!114 &1682691254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1649,7 +1677,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a07fe8295bae5874b9c42826da64f3dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: {fileID: 11400000, guid: 21b95c03eaa8f8148984fc06382bedec, type: 2}
+  material: {fileID: 11400000, guid: 9bb45466d0838da46874adfa6a58cfd3, type: 2}
   body: {fileID: 904965807}
   swingTrackingPosition: {fileID: 1682691255}
   onCollisionNode: 0

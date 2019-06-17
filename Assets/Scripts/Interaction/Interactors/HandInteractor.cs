@@ -48,7 +48,7 @@ public class HandInteractor : Interactor
             {
                 float swingAmp = touchingMaterials[i].GetSwingUpdateAmplitude(Time.deltaTime);
                 if(swingAmp > 0f)
-                    HapticHandler.Blip(node, swingAmp);
+                    HapticHandler.Blip(node, swingAmp, false);
                 continue;
             }
             else if(HapticHandler.DoingPulse(node))
@@ -58,7 +58,7 @@ public class HandInteractor : Interactor
 
             float amp = touchingMaterials[i].GetStayTouchAmplitude(body.velocity);
             if (amp > 0f)
-                HapticHandler.Blip(node, amp);
+                HapticHandler.Blip(node, amp, false);
         }
     }
 
@@ -113,6 +113,12 @@ public class HandInteractor : Interactor
             HapticHandler.DoPulseData(node, mat.GetBeginTouchPulse(body.velocity));
             mat.onCollisionNode = XRNode.LeftEye;
         }
+    }
+
+    public override bool GetNode(out XRNode node)
+    {
+        node = this.node;
+        return true;
     }
 
 }
