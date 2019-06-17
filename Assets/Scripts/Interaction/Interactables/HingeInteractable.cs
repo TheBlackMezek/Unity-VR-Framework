@@ -16,13 +16,24 @@ public class HingeInteractable : Interactable
     [SerializeField] private HapticPulseData onMinReachedPulse;
     [SerializeField] private HapticPulseData onMinLeftPulse;
 
+    [Header("Hinge Momentum Settings")]
+
+    [SerializeField] private bool doPostHoldMomentum;
+    [SerializeField] private float throwVelocityThreshold;
+    [SerializeField] private float drag;
+    [SerializeField] private bool bounce;
+    [SerializeField] private float bounceVelocityDivisor;
+
     private float hingeDist;
     private Vector3 alignmentAxis;
 
     private Vector3 originalDir;
     private Quaternion originalRot;
     private Vector3 interactorOffset;
-    private float prevAngle;
+    private float currentAngle;
+
+    private float angularVel;
+    private Queue<float> momentum = new Queue<float>();
 
 
 
@@ -30,7 +41,7 @@ public class HingeInteractable : Interactable
     {
         base.Awake();
 
-        prevAngle = initialRotation;
+        currentAngle = initialRotation;
 
         hingeDist = Vector3.Distance(hingePoint.position, transform.position);
         originalDir = (transform.position - hingePoint.position).normalized;
@@ -54,12 +65,28 @@ public class HingeInteractable : Interactable
     {
         base.HoldBegin();
         SetInitialTransformData();
+        SubscribeToUpdater.UpdateEvent -= MomentumUpdate;
     }
 
     protected override void HoldSwap()
     {
         base.HoldSwap();
         SetInitialTransformData();
+    }
+
+    protected override void HoldEnd(Vector3 velocity, Vector3 angularVelocity)
+    {
+        base.HoldEnd(velocity, angularVelocity);
+        if (doPostHoldMomentum && Mathf.Abs(angularVel) > throwVelocityThreshold)
+        {
+            int count = momentum.Count;
+            float sum = 0f;
+            while (momentum.Count > 0)
+                sum += momentum.Dequeue();
+
+            angularVel = sum / count;
+            SubscribeToUpdater.UpdateEvent += MomentumUpdate;
+        }
     }
 
     protected void SetInitialTransformData()
@@ -91,40 +118,74 @@ public class HingeInteractable : Interactable
                 angleAxis = Vector3.forward;
                 break;
         }
+        
+        float prevAngle = currentAngle;
+        SetCurrentAngle(Vector3.SignedAngle(originalDir, interactorPos.normalized, angleAxis) + initialRotation);
+        angularVel = (currentAngle - prevAngle) / Time.deltaTime;
+        momentum.Enqueue(angularVel);
+        if (momentum.Count > 10)
+            momentum.Dequeue();
+    }
 
-        Vector3 dir = interactorPos.normalized;
-        float newAngle = Vector3.SignedAngle(originalDir, dir, angleAxis);
+    protected void MomentumUpdate()
+    {
+        float dt = Time.deltaTime;
 
+        SetCurrentAngle(currentAngle + angularVel * dt);
+
+        if(currentAngle == 0f || currentAngle == rotationRange)
+        {
+            if(bounce)
+            {
+                angularVel /= bounceVelocityDivisor;
+                angularVel = -angularVel;
+            }
+            else
+            {
+                angularVel = 0f;
+            }
+        }
+        else
+        {
+            angularVel -= angularVel * dt * drag;
+        }
+        Debug.Log(angularVel);
+        if (Mathf.Abs(angularVel) < 0.001f)
+        {
+            angularVel = 0f;
+            SubscribeToUpdater.UpdateEvent -= MomentumUpdate;
+            Debug.Log("UNSUBSCRIBE");
+        }
+    }
+
+    protected void SetCurrentAngle(float angle)
+    {
         if (rotationRange > 0f)
         {
-            float rangeAngle = newAngle + initialRotation;
-            if (rangeAngle > rotationRange)
-                rangeAngle = rotationRange;
-            else if (rangeAngle < 0f)
-                rangeAngle = 0f;
-
-            newAngle = rangeAngle - initialRotation;
+            if (angle > rotationRange)
+                angle = rotationRange;
+            else if (angle < 0f)
+                angle = 0f;
 
             UnityEngine.XR.XRNode node;
-            if(holder.GetNode(out node) && rangeAngle != prevAngle)
+            if (held && holder.GetNode(out node) && angle != currentAngle)
             {
-                Debug.Log(rangeAngle);
-                if (rangeAngle == 0f)
+                if (angle == 0f)
                     HapticHandler.DoPulseData(node, onMinReachedPulse);
-                else if (rangeAngle == rotationRange)
+                else if (angle == rotationRange)
                     HapticHandler.DoPulseData(node, onMaxReachedPulse);
-                else if (prevAngle == 0f)
+                else if (currentAngle == 0f)
                     HapticHandler.DoPulseData(node, onMinLeftPulse);
-                else if (prevAngle == rotationRange)
+                else if (currentAngle == rotationRange)
                     HapticHandler.DoPulseData(node, onMaxLeftPulse);
             }
-            prevAngle = rangeAngle;
         }
 
-        Quaternion rotMod = Quaternion.AngleAxis(newAngle, alignmentAxis);
+        currentAngle = angle;
+
+        Quaternion rotMod = Quaternion.AngleAxis(angle - initialRotation, alignmentAxis);
         transform.rotation = originalRot * rotMod;
-        dir = rotMod * originalDir;
-        transform.position = hingePoint.TransformPoint(dir * hingeDist);
+        transform.position = hingePoint.TransformPoint(rotMod * originalDir * hingeDist);
     }
 
 }
