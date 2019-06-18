@@ -191,7 +191,7 @@ public class HingeInteractable : Interactable
         currentAngle = angle;
 
         Quaternion rotMod = Quaternion.AngleAxis(angle - initialRotation, alignmentAxis);
-        transform.rotation = originalRot * rotMod;
+        transform.rotation = rotMod * originalRot;
         transform.position = hingePoint.TransformPoint(rotMod * originalDir * hingeDist);
     }
 
