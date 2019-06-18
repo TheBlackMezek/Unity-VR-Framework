@@ -28,6 +28,7 @@ public class HingeInteractable : Interactable
     private Vector3 alignmentAxis;
 
     private Vector3 originalDir;
+    private Vector3 alignedDir;
     private Quaternion originalRot;
     private Vector3 interactorOffset;
     private float currentAngle;
@@ -45,18 +46,25 @@ public class HingeInteractable : Interactable
 
         hingeDist = Vector3.Distance(hingePoint.position, transform.position);
         originalDir = (transform.position - hingePoint.position).normalized;
+        alignedDir = originalDir;
         originalRot = transform.rotation;
 
         switch (axis)
         {
             case Axis.X:
                 alignmentAxis = hingePoint.right;
+                alignedDir.x = 0f;
+                alignedDir.Normalize();
                 break;
             case Axis.Y:
                 alignmentAxis = hingePoint.up;
+                alignedDir.y = 0f;
+                alignedDir.Normalize();
                 break;
             case Axis.Z:
                 alignmentAxis = hingePoint.forward;
+                alignedDir.z = 0f;
+                alignedDir.Normalize();
                 break;
         }
     }
@@ -120,7 +128,7 @@ public class HingeInteractable : Interactable
         }
         
         float prevAngle = currentAngle;
-        SetCurrentAngle(Vector3.SignedAngle(originalDir, interactorPos.normalized, angleAxis) + initialRotation);
+        SetCurrentAngle(Vector3.SignedAngle(alignedDir, interactorPos.normalized, angleAxis) + initialRotation);
         angularVel = (currentAngle - prevAngle) / Time.deltaTime;
         momentum.Enqueue(angularVel);
         if (momentum.Count > 10)
@@ -149,12 +157,11 @@ public class HingeInteractable : Interactable
         {
             angularVel -= angularVel * dt * drag;
         }
-        Debug.Log(angularVel);
+        
         if (Mathf.Abs(angularVel) < 0.001f)
         {
             angularVel = 0f;
             SubscribeToUpdater.UpdateEvent -= MomentumUpdate;
-            Debug.Log("UNSUBSCRIBE");
         }
     }
 

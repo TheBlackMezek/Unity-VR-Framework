@@ -116,7 +116,10 @@ public class Interactable : MonoBehaviour
         if(continuousHold)
         {
             held = false;
-            HoldEnd(body.velocity, body.angularVelocity);
+            if (body != null)
+                HoldEnd(body.velocity, body.angularVelocity);
+            else
+                HoldEnd(Vector3.zero, Vector3.zero);
             OnHoldEnd.Invoke();
         }
 
@@ -137,7 +140,10 @@ public class Interactable : MonoBehaviour
         {
             held = false;
             holder.Release(this);
-            HoldEnd(body.velocity, body.angularVelocity);
+            if (body != null)
+                HoldEnd(body.velocity, body.angularVelocity);
+            else
+                HoldEnd(Vector3.zero, Vector3.zero);
             OnHoldEnd.Invoke();
         }
     }
@@ -145,7 +151,8 @@ public class Interactable : MonoBehaviour
     protected virtual void HoldBegin()
     {
         holder.Hold(this);
-        body.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
+        if (body != null)
+            body.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
     }
 
     protected virtual void HoldSwap()
@@ -156,7 +163,8 @@ public class Interactable : MonoBehaviour
     protected virtual void HoldEnd(Vector3 velocity, Vector3 angularVelocity)
     {
         holder.Release(this);
-        body.collisionDetectionMode = originalDetectionMode;
+        if (body != null)
+            body.collisionDetectionMode = originalDetectionMode;
     }
 
 }
