@@ -470,7 +470,7 @@ MonoBehaviour:
   changeColor: 1
   lerpColors: 1
   onColor: {r: 1, g: 0, b: 0, a: 1}
-  offColor: {r: 1, g: 1, b: 0, a: 1}
+  offColor: {r: 1, g: 0, b: 1, a: 1}
   meshRenderer: {fileID: 5887568253015388848}
   changeTransform: 1
   lerpTransforms: 1
@@ -519,7 +519,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 39ed6b38d3cf246459305377ac0d9ad8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
